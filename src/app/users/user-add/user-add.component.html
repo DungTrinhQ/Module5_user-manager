@@ -1,0 +1,51 @@
+<form [formGroup]="addUserForm" (ngSubmit)="submit()">
+  <div class="form-group">
+    <label>Id</label>
+    <input type="number" class="form-control" formControlName="id" placeholder="Enter Id">
+
+  </div>
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" class="form-control" formControlName="name"  placeholder="Enter name">
+    <div *ngIf="name.invalid && (name.dirty || name.touched)"
+         class="alert alert-danger">
+
+      <div *ngIf="name.errors.required">
+        Name is required.
+      </div>
+
+      <div *ngIf="name.errors.minlength">
+        Name is required.
+      </div>
+
+    </div>
+
+  </div>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+
+    <div *ngIf="email.invalid && (email.dirty || email.touched)"
+         class="alert alert-danger">
+
+      <div *ngIf="email.errors.required">
+        Email is required.
+      </div>
+
+      <div *ngIf="email.errors.email">
+        Email is invalid
+      </div>
+
+    </div>
+
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Group</label>
+    <select class="form-control" id="exampleFormControlSelect1" formControlName="group_id">
+      <ng-container *ngFor="let group of groups">
+        <option value="{{ group.id }}">{{ group.name}}</option>
+      </ng-container>
+    </select>
+  </div>
+  <button type="submit" [disabled]="addUserForm.invalid" class="btn btn-primary">Submit</button>
+</form>

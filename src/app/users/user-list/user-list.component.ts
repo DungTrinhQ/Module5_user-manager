@@ -1,55 +1,52 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {IUser} from '../iuser';
+import {IGroup} from '../../groups/igroup';
+import {GroupService} from '../../groups/group.service';
+import {UserService} from '../user.service';
+
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  title = 'Users';
+
+  title_page = 'Users'
   users: IUser[] = [];
-  constructor() {
+
+  groups: IGroup[] = []
+
+  userFilter = [];
+
+  constructor(private groupService: GroupService,
+              private userService: UserService) {
   }
+
   ngOnInit(): void {
-    // this.userFilter = this.users;
-    this.users = this.getUserList();
+    this.userFilter = this.userService.getAll();
+    this.groups = this.groupService.getAll();
   }
-  getUserList(): IUser[] {
-    const users = [
-      {
-        id: 1,
-        name: 'duc',
-        email: 'duc@gmail.com'
-      },
-      {
-        id: 2,
-        name: 'vinh',
-        email: 'vinh@gmail.com'
-      },
-      {
-        id: 3,
-        name: 'tuan',
-        email: 'tuan@gmail.com'
-      }
-    ];
-    return users;
-  }
+
   search(event) {
-    let keyword = event.target.value;
-    this.users = (keyword) ? this.filterByKeyword(keyword) : this.getUserList();
+    let keyword = event;
+    this.userFilter = (keyword) ? this.filerByKeyword(keyword) : this.userService.getAll();
   }
-  filterByKeyword(keyword) {
-    return this.users.filter(user => {
+
+  filerByKeyword(keyword) {
+    return this.userService.getAll().filter(user => {
       return user.name.indexOf(keyword) != -1;
-    });
+    })
   }
+
   delete(id) {
-    let userDeleted = [];
-    this.users.map(user => {
-      if (user.id != id) {
-        userDeleted.push(user);
+    let userDelete=[];
+    this.userFilter.map(user =>{
+      if (user.id != id){
+        userDelete.push(user);
       }
     });
-    this.users = userDeleted;
+    this.userFilter=userDelete;
+    return this.userFilter;
   }
+
 }

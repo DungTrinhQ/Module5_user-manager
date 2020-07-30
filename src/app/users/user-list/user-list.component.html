@@ -2,32 +2,40 @@
   <div class="card-header">
     <div class="row">
       <div class="col-md-4">
-        {{ title }}
+        {{ title_page }}
       </div>
       <div class="col-md-8">
-        <input type="text" (keyup)="search($event)">
+        <app-input-search (keyword)="search($event)"></app-input-search>
       </div>
     </div>
-
-
   </div>
   <div class="card-body">
+    <button class="btn btn-primary" [routerLink]= "['add']">Create</button>
     <table class="table">
       <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Email</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Group</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Edit</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of users; let i = index">
+      <tr *ngFor="let user of userFilter; let i = index">
         <th scope="row">{{ i + 1 }}</th>
         <td>{{ user.name }}</td>
         <td>{{ user.email}}</td>
+
+        <ng-container *ngFor="let group of groups">
+          <td *ngIf="group.id == user.group_id">{{ group.name }}</td>
+        </ng-container>
         <td>
-          <button class="btn btn-danger" (click)="delete(user.id)" >Delete</button>
+          <button class="btn btn-danger" (click)="delete(user.id)">Delete</button>
+        </td>
+        <td>
+          <button class="btn btn-danger" [routerLink]="['edit', user.id]">Edit</button>
         </td>
       </tr>
 
